@@ -1,4 +1,5 @@
 import Id from "../../../@shared/domain/value-object/id.value-object";
+import Address from "../../../invoice/value-object/address";
 import Client from "../../domain/client.entity";
 import ClientGateway from "../../gateway/client.gateway";
 import { AddClientInputDto, AddClientOutputDto } from "./add-client.usecase.dto";
@@ -17,17 +18,33 @@ export default class AddClientUsecase {
             id: new Id(input.id) || new Id(),
             name: input.name,
             email: input.email,
-            address: input.address
+            document: input.document,
+            address: new Address(
+                input.address.street,
+                input.address.number,
+                input.address.zip,
+                input.address.city,
+                input.address.complement,
+                input.address.state,
+            )
         }
 
         const client = new Client(props);
-        this._clientRepository.add(client);
+        await this._clientRepository.add(client);
 
         return {
             id: client.id.id,
             name: client.name,
             email: client.email,
-            address: client.address,
+            document: client.document,
+            address: new Address(
+                client.address.street,
+                client.address.number,
+                client.address.zip,
+                client.address.city,
+                client.address.complement,
+                client.address.state,
+            ),
             createdAt: client.createdAt,
             updatedAt: client.updatedAt
         }

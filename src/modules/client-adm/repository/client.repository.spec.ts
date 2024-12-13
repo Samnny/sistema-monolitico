@@ -3,6 +3,7 @@ import { ClientModel } from "./client.model";
 import ClientRepository from "./client.repository";
 import Client from "../domain/client.entity";
 import Id from "../../@shared/domain/value-object/id.value-object";
+import Address from "../../invoice/value-object/address";
 
 describe("Client repository test", () => {
     
@@ -30,7 +31,15 @@ describe("Client repository test", () => {
             id: new Id("1"),
             name: "Client",
             email: "client@gmail.com",
-            address: "Address"
+            document: "12345678",
+            address: new Address(
+                "Rua 2",
+                "10",
+                "60540578",
+                "Fortal",
+                "Casa",
+                "CE",
+            )
         })
         const repository = new ClientRepository();
         await repository.add(client);
@@ -41,7 +50,7 @@ describe("Client repository test", () => {
         expect(clientModel.id).toBe(client.id.id);
         expect(clientModel.name).toBe(client.name);
         expect(clientModel.email).toBe(client.email);
-        expect(clientModel.address).toBe(client.address);
+        expect(clientModel.street).toBe(client.address.street);
         expect(clientModel.createdAt).toStrictEqual(client.createdAt);
         expect(clientModel.updatedAt).toStrictEqual(client.updatedAt);
     })
@@ -52,7 +61,13 @@ describe("Client repository test", () => {
             id: "1",
             name: "Client",
             email: "client@gmail.com",
-            address: "Address",
+            document: "12345678",
+            street: "Rua 2",
+            number: "10",
+            zipcode: "60540578",
+            city: "Fortal",
+            complement: "Casa",
+            state: "CE",
             createdAt: new Date(),
             updatedAt: new Date()
         })
@@ -62,7 +77,7 @@ describe("Client repository test", () => {
         expect(result.id.id).toEqual(client.id);
         expect(result.name).toEqual(client.name);
         expect(result.email).toEqual(client.email);
-        expect(result.address).toEqual(client.address);
+        expect(result.address.street).toEqual(client.street);
         expect(result.createdAt).toEqual(client.createdAt);
         expect(result.updatedAt).toEqual(client.updatedAt);
     })

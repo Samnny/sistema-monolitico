@@ -5,6 +5,7 @@ import AddClientUsecase from "../usecase/add-client/add-client.usecase";
 import ClientAdmFacade from "./client-adm.facade";
 import FindClientUsecase from "../usecase/find-client/find-client.usecase";
 import ClientAdmFacadeFactory from "../factory/client-adm.facade.factory";
+import Address from "../../invoice/value-object/address";
 
 describe("Client adm facade test", () => {
     
@@ -38,7 +39,15 @@ describe("Client adm facade test", () => {
             id: "1",
             name: "Client",
             email: "client@gmail.com",
-            address: "Address"
+            document: "12345678",
+            address: new Address(
+                "Rua 2",
+                "10",
+                "60540578",
+                "Fortal",
+                "Casa",
+                "CE"
+            )
         }
 
         await facade.add(input)
@@ -49,7 +58,8 @@ describe("Client adm facade test", () => {
         expect(client.id).toBe(input.id);
         expect(client.name).toBe(input.name);
         expect(client.email).toBe(input.email);
-        expect(client.address).toBe(input.address);
+        expect(client.document).toBe(input.document)
+        expect(client.street).toBe(input.address.street)
     })
 
     it("should find a client", async () => {
@@ -60,7 +70,13 @@ describe("Client adm facade test", () => {
             id: "1",
             name: "Client",
             email: "client@gmail.com",
-            address: "Address",
+            document: "12345678",
+            street: "Rua 2",
+            number: "10",
+            zipcode: "60540578",
+            city: "Fortal",
+            complement: "Casa",
+            state: "CE",
             createdAt: new Date(),
             updatedAt: new Date()
         })
@@ -71,6 +87,6 @@ describe("Client adm facade test", () => {
         expect(client.id).toBe("1");
         expect(client.name).toBe("Client");
         expect(client.email).toBe("client@gmail.com");
-        expect(client.address).toBe("Address");
+        expect(client.address.state).toBe("CE");
     })
 })

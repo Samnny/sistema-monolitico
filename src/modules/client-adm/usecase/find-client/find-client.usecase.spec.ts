@@ -1,4 +1,5 @@
 import Id from "../../../@shared/domain/value-object/id.value-object"
+import Address from "../../../invoice/value-object/address"
 import Client from "../../domain/client.entity"
 import FindClientUsecase from "./find-client.usecase"
 
@@ -6,7 +7,15 @@ const client = new Client({
     id: new Id("1"),
     name: "Client 1",
     email: "client@gmail.com",
-    address: "Address 1"
+    document: "12345678",
+    address: new Address(
+        "Rua 2", 
+        "10",
+        "60540578",
+        "Fortal",
+        "Casa",
+        "CE"
+    )
 })
 const MockRepository = () => {
     return {
@@ -30,7 +39,7 @@ describe("Find client usecase unit test", () => {
         expect(result.id).toBe(input.id)
         expect(result.name).toBe(client.name)
         expect(result.email).toBe(client.email)
-        expect(result.address).toBe(client.address)
+        expect(result.address.state).toBe(client.address.state)
         expect(result.createdAt).toBe(client.createdAt)
         expect(result.updatedAt).toBe(client.updatedAt)
     })
